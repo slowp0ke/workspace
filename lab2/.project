@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<projectDescription>
+	<name>lab2</name>
+	<comment></comment>
+	<projects>
+	</projects>
+	<buildSpec>
+		<buildCommand>
+			<name>org.eclipse.jdt.core.javabuilder</name>
+			<arguments>
+			</arguments>
+		</buildCommand>
+	</buildSpec>
+	<natures>
+		<nature>org.eclipse.jdt.core.javanature</nature>
+	</natures>
+	<variableList>
+		<variable>
+			<name>libs</name>
+			<value>file:/C:/Users/Dima/Desktop/%D0%9F%D0%BE%D0%BB%D0%B8%D1%82%D0%B5%D1%85/java/4/lab04/lab04/lib</value>
+		</variable>
+	</variableList>
+</projectDescription>

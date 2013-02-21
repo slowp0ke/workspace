@@ -2,19 +2,16 @@ package ru.spbstu.telematics.ivanov722.lab03;
 
 import java.util.Random;
 
-
-
 public class Car implements Runnable {
 
 	private TrafficLight tL;
 	private int id;
-	
-	
-	Car(TrafficLight tL, int id){
-		this.tL=tL;		
-		this.id=id;
+
+	Car(TrafficLight tL, int id) {
+		this.tL = tL;
+		this.id = id;
 	}
-	
+
 	public void run() {
 		long r = 1000 + new Random().nextInt(5000);
 		System.out.println(tL.getRoute() + " #" + id + " come to a crossroads");
@@ -25,12 +22,9 @@ public class Car implements Runnable {
 			e.printStackTrace();
 		}
 		tL.start(id);
-		System.out.println(tL.getRoute() + " #" + id + " depart form crossroads");
-		
-		
+		System.out.println(tL.getRoute() + " #" + id
+				+ " depart form crossroads");
+
 	}
-
-	
-
 
 }

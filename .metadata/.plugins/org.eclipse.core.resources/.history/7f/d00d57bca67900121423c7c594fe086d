@@ -1,0 +1,110 @@
+package ru.spbstu.telematics.ivanov722.lab03;
+
+
+public class TrafficLight {
+
+	private String route;
+	private int nextCar;
+	private CriticalPoint criticalPoint;
+
+
+	public TrafficLight(String route, int nextCar, CriticalPoint criticalPoint) {
+		this.route = route;
+		this.nextCar=nextCar;
+		this.criticalPoint = criticalPoint;
+	}	
+
+	public synchronized void start(int id){		
+		while(id!=nextCar){
+			try {
+				wait();
+			} catch (InterruptedException e) {				
+				e.printStackTrace();
+			}
+		}
+		if(route=="SN"){
+			runSN(id);
+		}
+		if(route=="NS"){
+			runNS(id);
+		}
+		if(route=="WE"){
+			runWE(id);
+		}
+		if(route=="EW"){
+			runEW(id);
+		}
+		if(route=="ES"){
+			runES(id);
+		}
+		nextCar++;
+		notifyAll();
+
+	}
+	public String getRoute(){
+		return route;
+	}
+	public synchronized void runSN(int id){
+		while(criticalPoint.getCritPoint(3)==1){
+			//prevent deadlock
+		}
+		criticalPoint.setSN_WE();
+		//System.out.println("SN:" + id + " SN_WE");
+		criticalPoint.freeSN_WE();
+		criticalPoint.setES_SN();
+		//System.out.println("SN:" + id + " SN_SE");
+		criticalPoint.freeES_SN();
+		criticalPoint.setSN_EW();
+		//System.out.println("SN:" + id + " SN_EW");
+		criticalPoint.freeSN_EW();
+
+	}
+	public synchronized void runNS(int id){
+		while(criticalPoint.getCritPoint(4)==1){
+			//prevent deadlock
+		}
+		criticalPoint.setNS_EW();
+		//System.out.println("NS:" + id + " NS_EW");
+		criticalPoint.freeNS_EW();
+		criticalPoint.setNS_WE();
+		//System.out.println("NS:" + id + " NS_WE");
+		criticalPoint.freeNS_WE();
+	}
+	public synchronized void runWE(int id){		
+		criticalPoint.setNS_WE();
+		//System.out.println("WE:" + id + " WE_NS");
+		criticalPoint.freeNS_WE();
+		criticalPoint.setES_WE();
+		//System.out.println("WE:" + id + " WE_ES");
+		criticalPoint.freeES_WE();
+		criticalPoint.setSN_WE();
+		//System.out.println("WE:" + id + " WE_SN");
+		criticalPoint.freeSN_WE();
+	}
+	public synchronized void runEW(int id){
+		while(criticalPoint.getCritPoint(5)==1){
+			//prevent deadlock
+		}
+		criticalPoint.setSN_EW();
+		//System.out.println("EW:" + id + " EW_SN");
+		criticalPoint.freeSN_EW();
+		criticalPoint.setNS_EW();
+		//System.out.println("EW:" + id + " EW_NS");
+		criticalPoint.freeNS_EW();
+
+	}
+	public synchronized void runES(int id){
+		while(criticalPoint.getCritPoint(2)==1){
+			//prevent deadlock
+		}
+		criticalPoint.setES_SN();
+		//System.out.println("ES:" + id + " ES_SN");
+		criticalPoint.freeES_SN();
+		criticalPoint.setES_WE();
+		//System.out.println("ES:" + id + " ES_WE");
+		criticalPoint.freeES_WE();
+
+	}
+
+
+}
