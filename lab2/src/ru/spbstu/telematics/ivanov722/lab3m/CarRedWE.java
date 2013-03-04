@@ -1,0 +1,55 @@
+package ru.spbstu.telematics.ivanov722.lab3m;
+
+import java.util.Random;
+
+public class CarRedWE implements Runnable {
+
+	@Override
+	public void run() {
+		while (true) {
+			try {
+				//ждем до 2 секунд прежде чем респауниться
+				long sleepTime = new Random().nextInt(2000);
+				Thread.sleep(sleepTime);
+				
+				
+				CrossRoad.getLockCardirW().lock();
+				System.out.println("Красная машина (W) подъезжает к перекрестку");
+				CrossRoad.getLockCardirN().lock();
+				System.out.println("Красная машина (W) выезжает на перекресток");
+				CrossRoad.getLockSectionWS().lock();
+				System.out.println("Красная машина (W) занимает секцию WS");
+				CrossRoad.getLockSectionSE().lock();
+				System.out.println("Красная машина (W) занимает секцию SE");
+				try {
+					//захватываем участки
+					CrossRoad.setBusyCardirW(true);	
+					CrossRoad.setBusyCardirN(true);	
+					CrossRoad.setBusySectionWS(true);		
+					CrossRoad.setBusySectionSE(true);
+					
+					//захватили, ждем какое-то время
+					Thread.sleep(500);
+					
+					//отпускаем всех, кого захватили
+					CrossRoad.setBusyCardirW(false);	
+					CrossRoad.setBusyCardirN(false);	
+					CrossRoad.setBusySectionWS(false);		
+					CrossRoad.setBusySectionSE(false);
+					
+				} finally {
+					CrossRoad.getLockCardirW().unlock();
+					CrossRoad.getLockCardirN().unlock();
+					CrossRoad.getLockSectionWS().unlock();
+					CrossRoad.getLockSectionSE().unlock();
+				}
+				
+				System.out.println("Красная машина (W) покинула перекресток");
+				
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+}
