@@ -1,4 +1,4 @@
-package lab2;
+ package ru.spbstu.telematics.ivanov722.lab02;
 
 import java.util.Iterator;
 import java.lang.reflect.Array;

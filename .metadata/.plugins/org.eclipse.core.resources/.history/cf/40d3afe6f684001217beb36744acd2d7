@@ -1,0 +1,60 @@
+package ru.spbstu.telematics.ivanov722.lab3m;
+
+import java.util.Random;
+
+public class CarRedWE implements Runnable {
+
+	@Override
+	public void run() {
+		while (true) {
+			try {
+				//ждем до 2 секунд прежде чем респауниться
+				long sleepTime = new Random().nextInt(2000);
+				Thread.sleep(sleepTime);
+				
+				
+				
+				
+				
+				
+				CrossRoad.getLockCardirW().lock();
+				System.out.println("������� ������ (W) ���������� � �����������");
+				CrossRoad.getLockCardirN().lock();
+				System.out.println("������� ������ (W) �������� �� �����������");
+				CrossRoad.getLockSectionWS().lock();
+				System.out.println("������� ������ (W) �������� ������ WS");
+				CrossRoad.getLockSectionSE().lock();
+				System.out.println("������� ������ (W) �������� ������ SE");
+				try {
+					//не знаю зачем тут вообще булевские переменные,
+					//на них никто не смотрит, но раз уж попросили..
+					CrossRoad.setBusyCardirW(true);	//захватываем свою сторону света
+					CrossRoad.setBusyCardirN(true);	//захватываем сторону света, которая слева
+					CrossRoad.setBusySectionWS(true);		
+					CrossRoad.setBusySectionSE(true);
+					
+					//захватили, радуемся и ждем какое-то время
+					Thread.sleep(500);
+					
+					//отпускаем всех, кого захватили
+					CrossRoad.setBusyCardirW(false);	//захватываем свою сторону света
+					CrossRoad.setBusyCardirN(false);	//захватываем сторону света, которая слева
+					CrossRoad.setBusySectionWS(false);		
+					CrossRoad.setBusySectionSE(false);
+					
+				} finally {
+					CrossRoad.getLockCardirW().unlock();
+					CrossRoad.getLockCardirN().unlock();
+					CrossRoad.getLockSectionWS().unlock();
+					CrossRoad.getLockSectionSE().unlock();
+				}
+				
+				System.out.println("Красная машина (W) покинула перекресток");
+				
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+}

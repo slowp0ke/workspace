@@ -1,0 +1,61 @@
+package ru.spbstu.telematics.ivanov722.lab3m;
+
+import java.util.Random;
+
+public class CarBrownES implements Runnable {
+
+	@Override
+	public void run() {
+		while (true) {
+			try {
+				//ждем до 2 секунд прежде чем респауниться
+				long sleepTime = new Random().nextInt(2000);
+				Thread.sleep(sleepTime);
+				
+				
+				
+				
+				
+				
+				CrossRoad.getLockCardirE().lock();
+				System.out.println("���������� ������ (e) ���������� � �����������");
+				CrossRoad.getLockCardirS().lock();
+				System.out.println("���������� ������ (�) �������� �� �����������");
+				CrossRoad.getLockSectionNE().lock();
+				System.out.println("���������� ������ (�) �������� ������ NE");
+				CrossRoad.getLockSectionWS().lock();
+				System.out.println("���������� ������ (�) �������� ������ WS");
+				try {
+					//не знаю зачем тут вообще булевские поля секций,
+					//на них никто не смотрит, но раз уж попросили..
+					CrossRoad.setBusyCardirE(true);	//захватываем свою сторону света
+					CrossRoad.setBusyCardirS(true);	//захватываем сторону света, которая слева
+					CrossRoad.setBusySectionNE(true);		
+					CrossRoad.setBusySectionWS(true);
+					
+					//захватили, радуемся и ждем какое-то время
+					Thread.sleep(500);
+					
+					//отпускаем всех, кого захватили
+					CrossRoad.setBusyCardirE(false);	//захватываем свою сторону света
+					CrossRoad.setBusyCardirS(false);	//захватываем сторону света, которая слева
+					CrossRoad.setBusySectionNE(false);		
+					CrossRoad.setBusySectionWS(false);
+					
+				} finally {
+					CrossRoad.getLockCardirE().unlock();
+					CrossRoad.getLockCardirS().unlock();
+					CrossRoad.getLockSectionNE().unlock();
+					CrossRoad.getLockSectionWS().unlock();
+				}
+				
+				System.out.println("Коричневая машина (Е) покинула перекресток");
+				
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			
+		}	
+	}
+
+}
